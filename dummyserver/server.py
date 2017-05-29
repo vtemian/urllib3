@@ -43,6 +43,10 @@ IPV6_ADDR_CERTS = {
     'certfile': os.path.join(CERTS_PATH, 'server.ipv6addr.crt'),
     'keyfile': os.path.join(CERTS_PATH, 'server.ipv6addr.key'),
 }
+CUSTOMHOST_CERTS = {
+    'certfile': os.path.join(CERTS_PATH, 'server.customhost.crt'),
+    'keyfile': os.path.join(CERTS_PATH, 'server.customhost.key'),
+}
 DEFAULT_CA = os.path.join(CERTS_PATH, 'cacert.pem')
 DEFAULT_CA_BAD = os.path.join(CERTS_PATH, 'client_bad.pem')
 NO_SAN_CA = os.path.join(CERTS_PATH, 'cacert.no_san.pem')
