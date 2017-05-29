@@ -45,6 +45,7 @@ _key_fields = (
     'key__proxy_headers',  # dict
     'key_socket_options',  # list of (level (int), optname (int), value (int or str)) tuples
     'key__socks_options',  # dict
+    'key_sni_hostname',  # str
     'key_assert_hostname',  # bool or string
     'key_assert_fingerprint',  # str
 )

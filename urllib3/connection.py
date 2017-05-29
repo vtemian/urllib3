@@ -257,7 +257,7 @@ class VerifiedHTTPSConnection(HTTPSConnection):
     def set_cert(self, key_file=None, cert_file=None,
                  cert_reqs=None, ca_certs=None,
                  assert_hostname=None, assert_fingerprint=None,
-                 ca_cert_dir=None):
+                 ca_cert_dir=None, sni_hostname=None):
         """
         This method should only be called once, before the connection is used.
         """
@@ -274,6 +274,7 @@ class VerifiedHTTPSConnection(HTTPSConnection):
         self.key_file = key_file
         self.cert_file = cert_file
         self.cert_reqs = cert_reqs
+        self.sni_hostname = sni_hostname
         self.assert_hostname = assert_hostname
         self.assert_fingerprint = assert_fingerprint
         self.ca_certs = ca_certs and os.path.expanduser(ca_certs)
@@ -284,6 +285,9 @@ class VerifiedHTTPSConnection(HTTPSConnection):
         conn = self._new_conn()
 
         hostname = self.host
+        if getattr(self, 'sni_hostname', None):
+            hostname = self.sni_hostname
+
         if getattr(self, '_tunnel_host', None):
             # _tunnel_host was added in Python 2.6.3
             # (See: http://hg.python.org/cpython/rev/0f57b30a152f)

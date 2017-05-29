@@ -754,7 +754,7 @@ class HTTPSConnectionPool(HTTPConnectionPool):
                  block=False, headers=None, retries=None,
                  _proxy=None, _proxy_headers=None,
                  key_file=None, cert_file=None, cert_reqs=None,
-                 ca_certs=None, ssl_version=None,
+                 ca_certs=None, ssl_version=None, sni_hostname=None,
                  assert_hostname=None, assert_fingerprint=None,
                  ca_cert_dir=None, **conn_kw):
 
@@ -772,6 +772,7 @@ class HTTPSConnectionPool(HTTPConnectionPool):
         self.ca_cert_dir = ca_cert_dir
         self.ssl_version = ssl_version
         self.assert_hostname = assert_hostname
+        self.sni_hostname = sni_hostname
         self.assert_fingerprint = assert_fingerprint
 
     def _prepare_conn(self, conn):
@@ -787,6 +788,7 @@ class HTTPSConnectionPool(HTTPConnectionPool):
                           ca_certs=self.ca_certs,
                           ca_cert_dir=self.ca_cert_dir,
                           assert_hostname=self.assert_hostname,
+                          sni_hostname=self.sni_hostname,
                           assert_fingerprint=self.assert_fingerprint)
             conn.ssl_version = self.ssl_version
         return conn
