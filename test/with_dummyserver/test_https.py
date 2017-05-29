@@ -12,9 +12,9 @@ from dummyserver.testcase import (
     HTTPSDummyServerTestCase, IPV6HTTPSDummyServerTestCase
 )
 from dummyserver.server import (DEFAULT_CA, DEFAULT_CA_BAD, DEFAULT_CERTS,
-                                NO_SAN_CERTS, NO_SAN_CA, DEFAULT_CA_DIR,
-                                IPV6_ADDR_CERTS, IPV6_ADDR_CA, HAS_IPV6,
-                                IP_SAN_CERTS)
+                                NO_SAN_CERTS, CUSTOMHOST_CERTS, NO_SAN_CA,
+                                DEFAULT_CA_DIR, IPV6_ADDR_CERTS, IPV6_ADDR_CA,
+                                HAS_IPV6, IP_SAN_CERTS)
 
 from test import (
     onlyPy26OrOlder,
@@ -539,6 +539,20 @@ class TestHTTPS_NoSAN(HTTPSDummyServerTestCase):
             r = https_pool.request('GET', '/')
             self.assertEqual(r.status, 200)
             self.assertTrue(warn.called)
+
+
+class TestHTTPS_SNI(HTTPSDummyServerTestCase):
+    certs = CUSTOMHOST_CERTS
+
+    def test_sni_hostname(self):
+        https_pool = HTTPSConnectionPool('127.0.0.1', self.port,
+                                         cert_reqs='CERT_REQUIRED',
+                                         sni_hostname='customhost',
+                                         assert_hostname='customhost',
+                                         ca_certs=DEFAULT_CA)
+        self.addCleanup(https_pool.close)
+
+        https_pool.request('GET', '/')
 
 
 class TestHTTPS_IPSAN(HTTPSDummyServerTestCase):
